@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập & Thi Thử Giữa Kì I - Tin Học 12 (cre: hieucute)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        .question-card {
+            scroll-margin-top: 60px;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn {
+            transition: all 0.15s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        .pkg-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .pkg-card:hover {
+            transform: translateY(-3px);
+        }
+        #zoom-wrapper {
+            transform-origin: top center;
+            transition: zoom 0.2s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+
+    <!-- ========================================================================= -->
+    <!-- MÀN HÌNH 1: SẢNH CHỌN GÓI ĐỀ TIN HỌC 12 (LOBBY SCREEN)                    -->
+    <!-- ========================================================================= -->
+    <section id="lobby-view" class="flex-1 flex flex-col">
+        <!-- Hero Header -->
+        <div class="bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 text-white border-b border-sky-800/60 shadow-lg">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-400 text-slate-950 flex items-center justify-center shadow-lg border-2 border-sky-200 shrink-0 text-2xl sm:text-3xl font-black">
+                            💻
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h1 class="font-black text-lg sm:text-2xl lg:text-3xl tracking-tight text-white">
+                                    ÔN TẬP & THI THỬ GIỮA KÌ I – TIN HỌC 12 (2026–2027)
+                                </h1>
+                                <span class="text-xs font-black px-2.5 py-0.5 bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 rounded-full shadow">
+                                    cre: hieucute
+                                </span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-sky-200 mt-1">
+                                ✅ <strong>Đáp án ĐÚNG:</strong> Tô Màu Xanh Lá • ❌ <strong>Đáp án SAI:</strong> Tô Màu Đỏ • 🔓 Không cần đăng nhập • Ra vào tự do
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Chỉnh cỡ chữ ở sảnh -->
+                    <div class="flex items-center gap-1.5 bg-slate-900/90 border border-sky-700/60 rounded-xl p-1.5 self-start md:self-center text-xs">
+                        <span class="px-2 text-sky-300 font-bold">Cỡ chữ:</span>
+                        <button type="button" onclick="setZoom(100)" id="lobby-zoom-100" class="px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black">100%</button>
+                        <button type="button" onclick="setZoom(115)" id="lobby-zoom-115" class="px-2.5 py-1 rounded-lg text-sky-200 hover:bg-sky-900 font-semibold">115%</button>
+                        <button type="button" onclick="setZoom(130)" id="lobby-zoom-130" class="px-2.5 py-1 rounded-lg text-sky-200 hover:bg-sky-900 font-semibold">130%</button>
+                    </div>
+                </div>
+
+                <!-- Bước 1: Chọn Chế Độ Làm Bài -->
+                <div class="mt-5 bg-slate-900/80 backdrop-blur rounded-2xl p-4 border border-sky-800/70">
+                    <div class="text-[11px] font-extrabold uppercase tracking-wider text-sky-300 mb-2.5">
+                        BƯỚC 1: CHỌN CHẾ ĐỘ HỌC / THI (CÓ THỂ CHUYỂN ĐỔI BẤT CỨ LÚC NÀO TRONG PHÒNG LÀM BÀI)
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <button
+                            type="button"
+                            id="lobby-mode-practice"
+                            onclick="setAppMode('practice')"
+                            class="text-left p-3 rounded-xl border-2 transition flex items-start gap-2.5 bg-emerald-500/20 border-emerald-400 text-white shadow"
+                        >
+                            <span class="text-lg">⚡</span>
+                            <div>
+                                <div class="font-black text-xs sm:text-sm text-emerald-300">Chấm Tức Thì (Đúng Xanh / Sai Đỏ)</div>
+                                <div class="text-[11px] text-slate-300 mt-0.5">Chọn đáp án nào chấm ngay câu đó: Đúng tô Xanh lá, Sai tô Đỏ.</div>
+                            </div>
+                        </button>
+
+                        <button
+                            type="button"
+                            id="lobby-mode-exam"
+                            onclick="setAppMode('exam')"
+                            class="text-left p-3 rounded-xl border-2 transition flex items-start gap-2.5 bg-slate-800/70 border-slate-700 text-slate-200 hover:border-sky-500/50"
+                        >
+                            <span class="text-lg">📝</span>
+                            <div>
+                                <div class="font-black text-xs sm:text-sm">Thi Thử Nộp Bài (45 Phút)</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">Đồng hồ đếm ngược 45 phút, nộp bài chấm thang điểm 10 (0,25đ/câu & 0,25đ/ý).</div>
+                            </div>
+                        </button>
+
+                        <button
+                            type="button"
+                            id="lobby-mode-key"
+                            onclick="setAppMode('key')"
+                            class="text-left p-3 rounded-xl border-2 transition flex items-start gap-2.5 bg-slate-800/70 border-slate-700 text-slate-200 hover:border-sky-500/50"
+                        >
+                            <span class="text-lg">👁️</span>
+                            <div>
+                                <div class="font-black text-xs sm:text-sm">Xem Đáp Án Xanh/Đỏ</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">Tô sẵn toàn bộ đáp án Đúng màu Xanh lá (#10b981) & Sai màu Đỏ (#ef4444).</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bước 2: Danh sách các Gói Đề Tin Học 12 -->
+        <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 space-y-6">
+            <!-- Hàng 1: 2 Gói Tổng Hợp Nổi Bật -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                        <span>🔥 BƯỚC 2: CHỌN GÓI ĐỀ THI THỬ HOẶC TRỌN BỘ ĐỀ CƯƠNG</span>
+                    </h2>
+                    <span class="text-xs font-bold text-sky-700">Ấn vào gói bất kỳ để mở màn hình làm bài</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Gói 1: Đề Thi Thử Chuẩn Ma Trận GK1 (31 Câu - 10 Điểm) -->
+                    <button
+                        type="button"
+                        onclick="openPackage('exam')"
+                        class="pkg-card text-left rounded-2xl p-5 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white shadow-lg border-2 border-amber-300 flex flex-col justify-between gap-4"
+                    >
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full bg-slate-950/30 text-amber-100 text-[11px] font-black uppercase">
+                                    CHUẨN MA TRẬN ĐẶC TẢ • 45 PHÚT
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-white text-slate-950 text-xs font-black">
+                                    31 Câu • 10 Điểm
+                                </span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-black">
+                                🎲 Đề Thi Thử Chuẩn Ma Trận GK1 (31 Câu - 10 Điểm)
+                            </h3>
+                            <p class="text-xs text-amber-50/95 leading-relaxed">
+                                Bốc ngẫu nhiên đúng tỉ lệ ma trận: <strong>28 câu Dạng 1 (7,0đ)</strong> [Bài 1.1: 10 câu (6B-2H-2VD), Bài 1.2: 2 câu, Bài 2.1: 6 câu (2B-4H), Bài 2.2: 5 câu (2B-3H), Chủ đề D: 5 câu (3B-2VD)] + <strong>3 câu Dạng 2 (3,0đ)</strong> [Bài 1.1: 1 câu, Bài 1.2: 1 câu, Bài 2.3: 1 câu].
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/20">
+                            <span class="text-xs font-bold text-amber-100">Mỗi lần bấm tạo 1 đề mới</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-slate-950 text-amber-300 font-black text-xs shadow">
+                                Vào Thi Ngay →
+                            </span>
+                        </div>
+                    </button>
+
+                    <!-- Gói 2: Trọn Bộ Đề Cương 76 Câu -->
+                    <button
+                        type="button"
+                        onclick="openPackage('all')"
+                        class="pkg-card text-left rounded-2xl p-5 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg border-2 border-sky-400/70 flex flex-col justify-between gap-4"
+                    >
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full bg-sky-400/20 text-sky-300 text-[11px] font-black uppercase">
+                                    TOÀN BỘ NGÂN HÀNG ĐỀ CƯƠNG
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-sky-400 text-slate-950 text-xs font-black">
+                                    Đủ 76 Câu
+                                </span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-black">
+                                📚 Trọn Bộ Đề Cương Tin Học 12 (76 Câu: 66 Câu Dạng 1 + 10 Câu Dạng 2)
+                            </h3>
+                            <p class="text-xs text-sky-100/90 leading-relaxed">
+                                Ôn tập toàn diện không sót câu nào từ Câu 1 đến Câu 66 (Dạng 1 - nhiều lựa chọn) và Câu 1 đến Câu 10 (Dạng 2 - Đúng/Sai) theo đúng thứ tự đề cương.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-sky-700/60">
+                            <span class="text-xs font-bold text-sky-300">Đầy đủ 100% câu hỏi trong file</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-sky-400 text-slate-950 font-black text-xs shadow">
+                                Mở Trọn Bộ 76 Câu →
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hàng 2: 6 Gói Ôn Tập Theo Từng Chủ Đề / Bài Học -->
+            <div>
+                <h2 class="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700 mb-3">
+                    📂 ÔN TẬP THEO TỪNG CHỦ ĐỀ & BÀI HỌC (6 GÓI CHUYÊN ĐỀ)
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                    <!-- Bài 1.1 -->
+                    <button
+                        type="button"
+                        onclick="openPackage('b1_1')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 font-black text-base flex items-center justify-center">🤖</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800">28 Câu</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề A - Bài 1.1: Giới thiệu Trí tuệ nhân tạo
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                24 câu Dạng 1 (12 Biết, 6 Hiểu, 6 VD) + 4 câu Dạng 2 (Đúng/Sai)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-sky-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+
+                    <!-- Bài 1.2 -->
+                    <button
+                        type="button"
+                        onclick="openPackage('b1_2')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-800 font-black text-base flex items-center justify-center">🔌</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">9 Câu</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề A - Bài 1.2: Thực hành kết nối thiết bị số
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                6 câu Dạng 1 (Cáp USB, HDMI, Bluetooth, Cast) + 3 câu Dạng 2 (Đúng/Sai)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-indigo-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+
+                    <!-- Bài 2.1 -->
+                    <button
+                        type="button"
+                        onclick="openPackage('b2_1')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 font-black text-base flex items-center justify-center">🌐</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">14 Câu</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề B - Bài 2.1: Thiết bị và giao thức mạng
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                14 câu Dạng 1 (5 câu Biết + 9 câu Hiểu: Switch, Router, Modem, AP, TCP/IP)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-emerald-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+
+                    <!-- Bài 2.2 -->
+                    <button
+                        type="button"
+                        onclick="openPackage('b2_2')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 font-black text-base flex items-center justify-center">💻</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">12 Câu</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề B - Bài 2.2: Các chức năng mạng của HĐH
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                12 câu Dạng 1 (5 câu Biết + 7 câu Hiểu: Chia sẻ tệp, thư mục, máy in trên Windows)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-amber-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+
+                    <!-- Bài 2.3 -->
+                    <button
+                        type="button"
+                        onclick="openPackage('b2_3')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-purple-100 text-purple-800 font-black text-base flex items-center justify-center">📱</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800">3 Câu Dạng 2</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề B - Bài 2.3: Thiết lập kết nối mạng trên thiết bị di động
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                3 câu Dạng 2 Đúng/Sai (12 ý a, b, c, d về Wi-Fi, 4G/5G, Hotspot, Bluetooth)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-purple-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+
+                    <!-- Chủ đề D -->
+                    <button
+                        type="button"
+                        onclick="openPackage('cd_d')"
+                        class="pkg-card text-left bg-white hover:bg-sky-50/60 rounded-2xl p-4 border-2 border-slate-200 hover:border-sky-500 shadow-sm flex flex-col justify-between gap-3"
+                    >
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="w-9 h-9 rounded-xl bg-rose-100 text-rose-800 font-black text-base flex items-center justify-center">🤝</span>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800">10 Câu</span>
+                            </div>
+                            <h3 class="font-black text-slate-900 text-sm sm:text-base">
+                                Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">
+                                10 câu Dạng 1 (6 câu Biết + 4 câu Vận dụng về ứng xử nhân văn trên mạng)
+                            </p>
+                        </div>
+                        <div class="text-xs font-extrabold text-rose-700 flex items-center justify-between pt-2 border-t border-slate-100">
+                            <span>Bắt đầu làm bài</span>
+                            <span>→</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-200 bg-white">
+            Đề Cương Ôn Tập Giữa Học Kì I – Tin Học 12 (2026–2027) • Thiết kế bởi <strong class="text-sky-700">cre: hieucute</strong>
+        </footer>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MÀN HÌNH 2: MÀN HÌNH LÀM BÀI SIÊU GỌN (QUIZ SCREEN - 1-LINE STICKY BAR)   -->
+    <!-- ========================================================================= -->
+    <section id="quiz-view" class="hidden flex-1 flex flex-col">
+        <!-- Thanh Điều Hướng Siêu Mỏng (1 Dòng Duy Nhất ~46px) -->
+        <header class="bg-slate-950 text-white sticky top-0 z-40 border-b border-slate-800 shadow-md">
+            <div class="max-w-7xl mx-auto px-2.5 sm:px-5 h-12 flex items-center justify-between gap-2 overflow-x-auto">
+                <!-- Trái: Nút quay về Sảnh + Tên gói + Tiến độ + Đồng hồ -->
+                <div class="flex items-center gap-2 min-w-0 shrink-0">
+                    <button
+                        type="button"
+                        onclick="backToLobby()"
+                        class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 font-extrabold text-xs border border-slate-700 flex items-center gap-1 transition shrink-0"
+                    >
+                        <span>←</span>
+                        <span>Chọn gói khác</span>
+                    </button>
+
+                    <span id="current-pkg-title" class="font-black text-xs sm:text-sm text-white truncate max-w-[160px] sm:max-w-[260px]">
+                        🎲 Đề Thi Thử Chuẩn Ma Trận
+                    </span>
+
+                    <span id="top-progress-badge" class="px-2 py-0.5 rounded-md bg-sky-500/20 border border-sky-400/40 text-sky-300 font-extrabold text-[11px] shrink-0">
+                        Đã làm: 0/31
+                    </span>
+
+                    <span id="exam-timer-badge" class="hidden px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-400/50 text-amber-300 font-black text-xs shrink-0">
+                        ⏱️ <span id="timer-text">45:00</span>
+                    </span>
+
+                    <span class="hidden xl:inline-block text-[10px] font-black px-2 py-0.5 bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 rounded-full shrink-0">
+                        cre: hieucute
+                    </span>
+                </div>
+
+                <!-- Phải: Chuyển chế độ + Tìm kiếm + Zoom + Đảo đề + Chấm điểm -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <!-- Chuyển 3 chế độ -->
+                    <div class="flex items-center bg-slate-900 p-0.5 rounded-lg border border-slate-700 text-[11px]">
+                        <button
+                            type="button"
+                            id="quiz-mode-practice"
+                            onclick="setAppMode('practice')"
+                            class="px-2 py-1 rounded-md font-extrabold transition bg-emerald-400 text-slate-950"
+                        >
+                            ⚡ Tức thì
+                        </button>
+                        <button
+                            type="button"
+                            id="quiz-mode-exam"
+                            onclick="setAppMode('exam')"
+                            class="px-2 py-1 rounded-md font-bold transition text-slate-300 hover:text-white"
+                        >
+                            📝 Thi thử
+                        </button>
+                        <button
+                            type="button"
+                            id="quiz-mode-key"
+                            onclick="setAppMode('key')"
+                            class="px-2 py-1 rounded-md font-bold transition text-slate-300 hover:text-white"
+                        >
+                            👁️ Đáp án
+                        </button>
+                    </div>
+
+                    <!-- Ô tìm kiếm nhanh -->
+                    <div class="relative hidden md:block w-40 lg:w-48">
+                        <input
+                            type="text"
+                            id="search-input"
+                            oninput="handleSearchInput()"
+                            placeholder="Tìm câu hỏi..."
+                            class="w-full pl-6 pr-5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-white placeholder-slate-400 text-xs focus:outline-none focus:border-sky-400"
+                        />
+                        <svg class="w-3 h-3 text-slate-400 absolute left-2 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <button
+                            type="button"
+                            id="clear-search-btn"
+                            onclick="clearSearch()"
+                            class="hidden absolute right-1.5 top-1 text-slate-400 hover:text-white text-xs font-bold"
+                        >
+                            ✕
+                        </button>
+                    </div>
+
+                    <!-- Zoom 100%, 115%, 130% -->
+                    <div class="hidden lg:flex items-center bg-slate-900 p-0.5 rounded-lg border border-slate-700 text-[10px]">
+                        <button type="button" onclick="setZoom(100)" id="top-zoom-100" class="px-1.5 py-1 rounded bg-sky-500 text-slate-950 font-black">100%</button>
+                        <button type="button" onclick="setZoom(115)" id="top-zoom-115" class="px-1.5 py-1 rounded text-slate-300 hover:text-white font-bold">115%</button>
+                        <button type="button" onclick="setZoom(130)" id="top-zoom-130" class="px-1.5 py-1 rounded text-slate-300 hover:text-white font-bold">130%</button>
+                    </div>
+
+                    <!-- Nút Đảo đề -->
+                    <button
+                        type="button"
+                        onclick="shuffleOrRegenerateExam()"
+                        class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 font-extrabold text-xs"
+                        title="Tạo đề ngẫu nhiên mới hoặc đảo thứ tự câu hỏi"
+                    >
+                        🎲 Đảo đề
+                    </button>
+
+                    <!-- Nút Chấm Điểm -->
+                    <button
+                        type="button"
+                        onclick="submitExamNow()"
+                        class="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow"
+                    >
+                        ✅ Chấm Điểm
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Nội dung chính của màn hình làm bài -->
+        <div id="zoom-wrapper" class="flex-1 flex flex-col">
+            <main class="max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 flex-1 space-y-4">
+
+                <!-- Ô tìm kiếm cho điện thoại (chỉ hiện trên màn hình nhỏ) -->
+                <div class="md:hidden flex items-center gap-2">
+                    <div class="relative flex-1">
+                        <input
+                            type="text"
+                            id="mobile-search-input"
+                            oninput="handleMobileSearchInput()"
+                            placeholder="Tìm nhanh câu hỏi, từ khóa..."
+                            class="w-full pl-7 pr-6 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        />
+                        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <button
+                        type="button"
+                        onclick="resetAllUserAnswers()"
+                        class="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs shrink-0"
+                    >
+                        🔄 Làm lại
+                    </button>
+                </div>
+
+                <!-- Bảng Kết Quả Chấm Điểm -->
+                <div id="score-banner" class="hidden bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 rounded-2xl p-5 text-white shadow-xl border border-sky-500/40">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="space-y-1.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-400 text-slate-950 font-black text-xs uppercase">
+                                    KẾT QUẢ BÀI LÀM
+                                </span>
+                                <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-xs">
+                                    cre: hieucute
+                                </span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black" id="score-banner-title">Kết Quả Chấm Điểm Tin Học 12</h3>
+                            <p id="score-detail-text" class="text-xs text-sky-200 font-semibold"></p>
+                            <div class="flex flex-wrap gap-2.5 pt-1 text-xs font-bold">
+                                <span class="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200">
+                                    ✓ Đúng (Xanh): <strong id="res-correct-count" class="text-emerald-300">0</strong>
+                                </span>
+                                <span class="px-3 py-1 rounded-lg bg-rose-500/20 border border-rose-400/40 text-rose-200">
+                                    ✗ Sai (Đỏ): <strong id="res-wrong-count" class="text-rose-300">0</strong>
+                                </span>
+                                <span class="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-slate-200">
+                                    Chưa chọn: <strong id="res-unanswered-count" class="text-amber-300">0</strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 shrink-0">
+                            <div class="bg-white text-slate-950 rounded-2xl px-5 py-3 text-center shadow-lg border-4 border-emerald-400">
+                                <div class="text-[10px] font-extrabold text-slate-500 uppercase" id="res-score-label">THANG ĐIỂM 10</div>
+                                <div id="res-total-score10" class="text-3xl font-black text-emerald-600">10.0</div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <button
+                                    type="button"
+                                    onclick="resetAllUserAnswers()"
+                                    class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow"
+                                >
+                                    🔄 Làm Lại Gói Này
+                                </button>
+                                <button
+                                    type="button"
+                                    onclick="shuffleOrRegenerateExam()"
+                                    class="px-3.5 py-2 rounded-xl bg-sky-400 hover:bg-sky-300 text-slate-950 font-black text-xs shadow"
+                                >
+                                    🎲 Đề Ngẫu Nhiên Mới
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bố cục 2 cột: Danh sách câu hỏi (Trái) + Bảng điều hướng câu hỏi thu gọn (Phải) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                    <!-- Cột Trái: Danh sách câu hỏi -->
+                    <div id="questions-list" class="lg:col-span-8 xl:col-span-9 space-y-4"></div>
+
+                    <!-- Cột Phải: Bảng điều hướng câu hỏi nhanh (có thể thu gọn trên mobile) -->
+                    <aside class="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-16 bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                            <h3 class="font-black text-slate-900 text-xs sm:text-sm">Bảng Câu Hỏi Nhanh</h3>
+                            <div class="flex items-center gap-1.5">
+                                <span id="sidebar-stats-badge" class="text-xs font-extrabold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-lg border border-sky-200">
+                                    0 / 31
+                                </span>
+                                <button
+                                    type="button"
+                                    onclick="toggleNavigatorBody()"
+                                    class="lg:hidden px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs font-bold"
+                                >
+                                    Ẩn/Hiện
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="navigator-body" class="space-y-3">
+                            <div class="grid grid-cols-2 gap-1.5 text-[11px] font-bold">
+                                <div class="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200">
+                                    <span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block shrink-0"></span> Đúng (Xanh)
+                                </div>
+                                <div class="flex items-center gap-1.5 text-rose-700 bg-rose-50 px-2 py-1 rounded-lg border border-rose-200">
+                                    <span class="w-2.5 h-2.5 rounded bg-rose-500 inline-block shrink-0"></span> Sai (Đỏ)
+                                </div>
+                            </div>
+
+                            <div id="palette-container" class="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 max-h-[340px] overflow-y-auto pr-1"></div>
+
+                            <div class="pt-2 border-t border-slate-100 flex flex-col gap-2">
+                                <button
+                                    type="button"
+                                    onclick="submitExamNow()"
+                                    class="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow transition"
+                                >
+                                    ✅ Chấm Điểm & Xem Đáp Án Xanh/Đỏ
+                                </button>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button
+                                        type="button"
+                                        onclick="resetAllUserAnswers()"
+                                        class="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition"
+                                    >
+                                        🔄 Làm lại
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onclick="backToLobby()"
+                                        class="py-2 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition"
+                                    >
+                                        ← Đổi gói đề
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- DỮ LIỆU ĐẦY ĐỦ 76 CÂU TIN HỌC 12 & LOGIC XỬ LÝ                            -->
+    <!-- ========================================================================= -->
+    <script>
+        // Ngân hàng 66 câu Dạng 1 (Trắc nghiệm nhiều lựa chọn - 0.25 điểm/câu)
+        const PART1_QUESTIONS = [
+            // ================= CHỦ ĐỀ A – BÀI 1.1: GIỚI THIỆU TRÍ TUỆ NHÂN TẠO (24 CÂU) =================
+            // Mức Biết (Câu 1 - 12)
+            {
+                id: 'p1_1', num: 'Câu 1', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Thuật ngữ AI là viết tắt của cụm từ nào?',
+                options: ['A. Automatic Information', 'B. Artificial Intelligence', 'C. Advanced Internet', 'D. Applied Informatics'],
+                a: 1
+            },
+            {
+                id: 'p1_2', num: 'Câu 2', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Phát biểu nào đúng nhất về trí tuệ nhân tạo (AI)?',
+                options: [
+                    'A. Là một loại máy tính có cấu hình rất mạnh.',
+                    'B. Là phần mềm diệt virus thông minh.',
+                    'C. Là khả năng của máy tính thực hiện những công việc đòi hỏi trí tuệ con người như học, suy luận, giải quyết vấn đề.',
+                    'D. Là robot có hình dáng giống con người.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_3', num: 'Câu 3', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Thuật ngữ "trí tuệ nhân tạo" được John McCarthy đề xuất lần đầu tại hội thảo Dartmouth vào năm nào?',
+                options: ['A. 1946', 'B. 1950', 'C. 1956', 'D. 1969'],
+                a: 2
+            },
+            {
+                id: 'p1_4', num: 'Câu 4', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Ứng dụng nào sau đây là ứng dụng của AI?',
+                options: [
+                    'A. Soạn văn bản bằng Notepad.',
+                    'B. Trợ lí ảo nhận lệnh bằng giọng nói.',
+                    'C. Máy tính bỏ túi cộng hai số.',
+                    'D. Sao chép tệp vào USB.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_5', num: 'Câu 5', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Mở khóa điện thoại bằng nhận dạng khuôn mặt là ứng dụng AI thuộc lĩnh vực nào?',
+                options: ['A. Thị giác máy tính.', 'B. Xử lí bảng tính.', 'C. Mạng máy tính.', 'D. Đồ họa vector.'],
+                a: 0
+            },
+            {
+                id: 'p1_6', num: 'Câu 6', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Phần mềm chuyển lời nói thành văn bản sử dụng kĩ thuật AI nào?',
+                options: ['A. Nhận dạng chữ viết tay.', 'B. Nhận dạng tiếng nói.', 'C. Nhận dạng khuôn mặt.', 'D. Điều khiển tự động.'],
+                a: 1
+            },
+            {
+                id: 'p1_7', num: 'Câu 7', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Ứng dụng nào là ứng dụng AI trong y tế?',
+                options: [
+                    'A. Hỗ trợ chẩn đoán bệnh qua phân tích ảnh X-quang, MRI.',
+                    'B. In đơn thuốc ra giấy.',
+                    'C. Lưu danh sách bệnh nhân bằng bảng tính.',
+                    'D. Gửi email nhắc lịch khám.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_8', num: 'Câu 8', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Đâu là các đặc trưng cơ bản của một hệ thống AI?',
+                options: [
+                    'A. Có màn hình cảm ứng.',
+                    'B. Kết nối Internet tốc độ cao.',
+                    'C. Có khả năng học, suy luận, nhận thức, hiểu ngôn ngữ và giải quyết vấn đề.',
+                    'D. Chạy được nhiều chương trình cùng lúc.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_9', num: 'Câu 9', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'AI hẹp (AI yếu) là gì?',
+                options: [
+                    'A. AI chỉ thực hiện tốt một nhiệm vụ hoặc một nhóm nhiệm vụ cụ thể.',
+                    'B. AI có trí tuệ vượt con người ở mọi mặt.',
+                    'C. AI được cài trên thiết bị có kích thước nhỏ.',
+                    'D. AI hoạt động không cần dữ liệu.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_10', num: 'Câu 10', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Phát biểu nào đúng về AI tổng quát (AI mạnh)?',
+                options: [
+                    'A. Đã được cài sẵn trên mọi điện thoại thông minh.',
+                    'B. Là AI chỉ chơi được cờ vua.',
+                    'C. Có thể hiểu, học và thực hiện mọi nhiệm vụ trí tuệ như con người; hiện vẫn là mục tiêu nghiên cứu.',
+                    'D. Là phần mềm dịch máy.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_11', num: 'Câu 11', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Lĩnh vực nào sau đây đang phát triển mạnh nhờ thành tựu của AI?',
+                options: ['A. Xe tự lái.', 'B. Đóng sách thủ công.', 'C. Làm gốm thủ công.', 'D. Viết thư tay.'],
+                a: 0
+            },
+            {
+                id: 'p1_12', num: 'Câu 12', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Biết',
+                q: 'Đâu là một cảnh báo về sự phát triển của AI?',
+                options: [
+                    'A. AI làm máy tính chạy chậm.',
+                    'B. AI có thể bị lợi dụng để tạo tin giả, video giả mạo (deepfake).',
+                    'C. AI làm tăng dung lượng ổ cứng.',
+                    'D. AI làm hỏng bàn phím.'
+                ],
+                a: 1
+            },
+
+            // Mức Hiểu (Câu 13 - 18)
+            {
+                id: 'p1_13', num: 'Câu 13', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Vì sao hệ thống gợi ý video trên YouTube, TikTok được xem là ứng dụng AI?',
+                options: [
+                    'A. Vì hiển thị video độ phân giải cao.',
+                    'B. Vì học từ lịch sử xem của người dùng để dự đoán và gợi ý nội dung phù hợp.',
+                    'C. Vì lưu trữ được rất nhiều video.',
+                    'D. Vì cho xem video miễn phí.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_14', num: 'Câu 14', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Hệ chuyên gia chẩn đoán bệnh dựa trên cơ sở tri thức và các luật suy diễn thể hiện khả năng nào của AI?',
+                options: ['A. Suy luận dựa trên tri thức.', 'B. Nhận dạng tiếng nói.', 'C. Di chuyển trong không gian.', 'D. Lưu trữ dữ liệu.'],
+                a: 0
+            },
+            {
+                id: 'p1_15', num: 'Câu 15', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Phát biểu nào sau đây SAI về AI?',
+                options: [
+                    'A. AI có thể học từ dữ liệu.',
+                    'B. Kết quả của AI luôn chính xác tuyệt đối, không cần con người kiểm tra.',
+                    'C. AI được ứng dụng trong nhiều lĩnh vực.',
+                    'D. AI có thể mắc lỗi khi dữ liệu huấn luyện sai lệch.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_16', num: 'Câu 16', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Vì sao chương trình máy tính bỏ túi thực hiện phép cộng, trừ không được xem là AI?',
+                options: [
+                    'A. Vì không có giao diện đồ họa.',
+                    'B. Vì chạy quá nhanh.',
+                    'C. Vì không kết nối Internet.',
+                    'D. Vì chỉ thực hiện theo quy trình cố định đã lập trình, không có khả năng học hay suy luận.'
+                ],
+                a: 3
+            },
+            {
+                id: 'p1_17', num: 'Câu 17', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Ví dụ nào thể hiện khả năng học của AI?',
+                options: [
+                    'A. Bộ lọc thư rác phân loại ngày càng chính xác khi người dùng đánh dấu thư rác.',
+                    'B. Máy in in tài liệu theo lệnh.',
+                    'C. Đèn tự bật theo giờ hẹn cố định.',
+                    'D. Máy giặt quay theo chương trình cài sẵn.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_18', num: 'Câu 18', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Hiểu',
+                q: 'Vì sao AI có thể ảnh hưởng đến việc làm của con người?',
+                options: [
+                    'A. Vì AI làm tăng số giờ làm việc.',
+                    'B. Vì AI cấm con người làm một số nghề.',
+                    'C. Vì AI tự động hóa nhiều công việc lặp lại, một số nghề có nguy cơ bị thay thế, người lao động cần học kĩ năng mới.',
+                    'D. Vì AI chỉ dùng trong giải trí.'
+                ],
+                a: 2
+            },
+
+            // Mức Vận dụng (Câu 19 - 24)
+            {
+                id: 'p1_19', num: 'Câu 19', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Một nông trại dùng drone chụp ảnh ruộng, AI phân tích ảnh để phát hiện sâu bệnh. Đây là ứng dụng AI trong lĩnh vực nào?',
+                options: ['A. Nông nghiệp.', 'B. Tài chính.', 'C. Giáo dục.', 'D. Giải trí.'],
+                a: 0
+            },
+            {
+                id: 'p1_20', num: 'Câu 20', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Ngân hàng dùng AI phân tích các giao dịch để phát hiện giao dịch bất thường. Mục đích chính là gì?',
+                options: [
+                    'A. Tăng phí dịch vụ.',
+                    'B. Phát hiện gian lận, bảo vệ tài khoản khách hàng.',
+                    'C. In sao kê nhanh hơn.',
+                    'D. Giảm số nhân viên bảo vệ.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_21', num: 'Câu 21', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Bạn An nhận cuộc gọi video từ "người thân" nhờ chuyển tiền gấp, hình ảnh và giọng nói rất giống thật. An nên làm gì?',
+                options: [
+                    'A. Chuyển tiền ngay để giúp người thân.',
+                    'B. Chia sẻ cuộc gọi lên mạng xã hội.',
+                    'C. Gọi lại trực tiếp qua số điện thoại quen thuộc để xác minh trước khi làm gì.',
+                    'D. Cung cấp mã OTP để người thân tự chuyển.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_22', num: 'Câu 22', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Cách sử dụng chatbot AI nào sau đây phù hợp với học sinh?',
+                options: [
+                    'A. Chép nguyên văn câu trả lời của AI để nộp bài.',
+                    'B. Dùng AI để tham khảo, gợi ý, tự kiểm chứng thông tin và tự hoàn thành bài.',
+                    'C. Dùng AI làm bài kiểm tra trên lớp.',
+                    'D. Tin tưởng tuyệt đối mọi câu trả lời của AI.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_23', num: 'Câu 23', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Trong giao thông, ứng dụng nào dựa trên AI?',
+                options: [
+                    'A. Biển báo sơn phản quang.',
+                    'B. Vạch kẻ đường.',
+                    'C. Barie đóng mở thủ công.',
+                    'D. Camera nhận dạng biển số xe và phân tích lưu lượng để điều khiển đèn tín hiệu.'
+                ],
+                a: 3
+            },
+            {
+                id: 'p1_24', num: 'Câu 24', part: 1, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo', level: 'Vận dụng',
+                q: 'Nhóm nào gồm toàn các ứng dụng có sử dụng AI?',
+                options: [
+                    'A. Google Dịch, trợ lí ảo Siri, xe tự lái.',
+                    'B. Notepad, Paint, Calculator.',
+                    'C. Bàn phím, chuột, máy in.',
+                    'D. Ổ cứng, RAM, CPU.'
+                ],
+                a: 0
+            },
+
+            // ================= CHỦ ĐỀ A – BÀI 1.2: (ICT) THỰC HÀNH KẾT NỐI THIẾT BỊ SỐ (6 CÂU) =================
+            {
+                id: 'p1_25', num: 'Câu 25', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Cách phổ biến để kết nối máy tính (PC) với điện thoại nhằm chép ảnh là dùng loại cáp nào?',
+                options: ['A. Cáp USB.', 'B. Cáp VGA.', 'C. Cáp mạng RJ45.', 'D. Cáp nguồn.'],
+                a: 0
+            },
+            {
+                id: 'p1_26', num: 'Câu 26', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Cắm cáp USB nối điện thoại Android với PC nhưng PC chỉ sạc pin, không hiển thị bộ nhớ điện thoại. Cần làm gì?',
+                options: [
+                    'A. Khởi động lại modem.',
+                    'B. Trên điện thoại chọn chế độ USB "Truyền tệp" (File transfer).',
+                    'C. Tắt Wi-Fi trên PC.',
+                    'D. Tháo thẻ SIM.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_27', num: 'Câu 27', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Để hiển thị màn hình laptop lên tivi bằng dây, nên dùng loại cáp nào?',
+                options: ['A. Cáp HDMI.', 'B. Cáp RJ11 (điện thoại bàn).', 'C. Cáp nguồn.', 'D. Cáp âm thanh 3,5 mm.'],
+                a: 0
+            },
+            {
+                id: 'p1_28', num: 'Câu 28', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Vòng đeo tay thông minh thường kết nối với điện thoại qua phương thức nào?',
+                options: ['A. Cáp HDMI.', 'B. Bluetooth.', 'C. Cáp quang.', 'D. Cáp VGA.'],
+                a: 1
+            },
+            {
+                id: 'p1_29', num: 'Câu 29', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Thứ tự nào đúng khi ghép đôi Bluetooth giữa PC chạy Windows và điện thoại?',
+                options: [
+                    'A. Chỉ bật Bluetooth trên PC rồi chờ.',
+                    'B. Cắm cáp HDMI giữa hai thiết bị.',
+                    'C. Bật Bluetooth trên cả hai thiết bị → trên PC chọn Add device → chọn tên điện thoại → xác nhận mã ghép đôi trùng khớp trên hai máy.',
+                    'D. Nhập mật khẩu Wi-Fi vào điện thoại.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_30', num: 'Câu 30', part: 1, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số', level: 'Vận dụng',
+                q: 'Trên Windows, tổ hợp phím nào mở nhanh tính năng kết nối màn hình không dây (Cast) để chiếu lên tivi thông minh?',
+                options: ['A. Windows + L', 'B. Ctrl + C', 'C. Alt + F4', 'D. Windows + K'],
+                a: 3
+            },
+
+            // ================= CHỦ ĐỀ B – BÀI 2.1: THIẾT BỊ VÀ GIAO THỨC MẠNG (14 CÂU) =================
+            // Mức Biết (Câu 31 - 35)
+            {
+                id: 'p1_31', num: 'Câu 31', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Biết',
+                q: 'Thiết bị nào kết nối các máy tính trong một mạng LAN và chuyển dữ liệu đến đúng máy nhận?',
+                options: ['A. Switch.', 'B. Modem.', 'C. Máy chiếu.', 'D. Loa.'],
+                a: 0
+            },
+            {
+                id: 'p1_32', num: 'Câu 32', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Biết',
+                q: 'Access Point (điểm truy cập không dây) có chức năng gì?',
+                options: [
+                    'A. Chuyển đổi tín hiệu số – tương tự.',
+                    'B. Cho các thiết bị kết nối Wi-Fi tham gia vào mạng có dây.',
+                    'C. In tài liệu qua mạng.',
+                    'D. Lưu trữ dữ liệu cho cả mạng.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_33', num: 'Câu 33', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Biết',
+                q: 'Modem có chức năng chính là gì?',
+                options: [
+                    'A. Phát sóng Bluetooth.',
+                    'B. Chia một cổng mạng thành nhiều cổng.',
+                    'C. Điều chế và giải điều chế, chuyển đổi tín hiệu giữa thiết bị số và đường truyền của nhà mạng để kết nối Internet.',
+                    'D. Quét virus cho các máy trong mạng.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_34', num: 'Câu 34', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Biết',
+                q: 'Giao thức mạng là gì?',
+                options: [
+                    'A. Tập hợp các quy tắc quy định cách thức trao đổi dữ liệu giữa các thiết bị trong mạng.',
+                    'B. Dây cáp nối các máy tính.',
+                    'C. Phần mềm diệt virus.',
+                    'D. Tên của mạng Wi-Fi.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_35', num: 'Câu 35', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Biết',
+                q: 'Bộ giao thức TCP/IP gồm hai giao thức chính nào?',
+                options: ['A. HTTP và FTP.', 'B. TCP và IP.', 'C. SMTP và POP3.', 'D. DNS và DHCP.'],
+                a: 1
+            },
+
+            // Mức Hiểu (Câu 36 - 44)
+            {
+                id: 'p1_36', num: 'Câu 36', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Giao thức IP chịu trách nhiệm chính về việc gì?',
+                options: [
+                    'A. Hiển thị trang web.',
+                    'B. Gửi thư điện tử.',
+                    'C. Mã hóa mật khẩu.',
+                    'D. Đánh địa chỉ và định tuyến, đưa các gói tin đến đúng máy nhận.'
+                ],
+                a: 3
+            },
+            {
+                id: 'p1_37', num: 'Câu 37', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Giao thức TCP đảm bảo điều gì?',
+                options: [
+                    'A. Chia dữ liệu thành các gói tin, đánh số thứ tự, yêu cầu gửi lại gói bị lỗi hoặc bị mất và ghép lại đúng thứ tự.',
+                    'B. Đặt tên miền cho trang web.',
+                    'C. Cấp điện cho thiết bị mạng.',
+                    'D. Tăng tốc độ CPU.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_38', num: 'Câu 38', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Địa chỉ IPv4 nào sau đây hợp lệ?',
+                options: ['A. 192.168.1.256', 'B. 192.168.1.10', 'C. 192.168.1', 'D. 192,168,1,10'],
+                a: 1
+            },
+            {
+                id: 'p1_39', num: 'Câu 39', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Một địa chỉ IPv4 có độ dài bao nhiêu bit?',
+                options: ['A. 8 bit.', 'B. 16 bit.', 'C. 32 bit.', 'D. 128 bit.'],
+                a: 2
+            },
+            {
+                id: 'p1_40', num: 'Câu 40', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Điểm khác biệt chính giữa Switch và Router là gì?',
+                options: [
+                    'A. Hai thiết bị hoàn toàn giống nhau.',
+                    'B. Router chỉ dùng để nối máy in.',
+                    'C. Switch kết nối các thiết bị trong cùng một mạng cục bộ; Router kết nối các mạng khác nhau và định tuyến gói tin giữa các mạng.',
+                    'D. Switch kết nối trực tiếp Internet, không cần Modem.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_41', num: 'Câu 41', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Trong mạng gia đình, thứ tự kết nối nào hợp lí?',
+                options: [
+                    'A. Máy tính → Đường truyền nhà mạng → Switch → Modem.',
+                    'B. Access Point → Đường truyền nhà mạng → Máy tính → Modem.',
+                    'C. Đường truyền nhà mạng → Modem → Router/Switch/Access Point → Máy tính, điện thoại.',
+                    'D. Switch → Máy tính → Modem → Đường truyền nhà mạng.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_42', num: 'Câu 42', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Vì sao các thiết bị trên Internet cần dùng chung giao thức?',
+                options: [
+                    'A. Để các thiết bị khác hãng, khác hệ điều hành vẫn "hiểu" nhau và trao đổi được dữ liệu.',
+                    'B. Để tăng giá thiết bị.',
+                    'C. Để máy tính khởi động nhanh hơn.',
+                    'D. Để tiết kiệm điện năng.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_43', num: 'Câu 43', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Giao thức nào dùng để truy cập trang web có mã hóa bảo mật?',
+                options: ['A. HTTP', 'B. FTP', 'C. SMTP', 'D. HTTPS'],
+                a: 3
+            },
+            {
+                id: 'p1_44', num: 'Câu 44', part: 1, topicId: 'b2_1', topicName: 'Chủ đề B – Bài 2.1: Thiết bị và giao thức mạng', level: 'Hiểu',
+                q: 'Phòng máy có 30 máy tính cần nối mạng có dây với nhau. Thiết bị nào phù hợp nhất?',
+                options: [
+                    'A. Một Modem.',
+                    'B. Switch có đủ số cổng (hoặc ghép nhiều Switch).',
+                    'C. Một Access Point.',
+                    'D. Một loa Bluetooth.'
+                ],
+                a: 1
+            },
+
+            // ================= CHỦ ĐỀ B – BÀI 2.2: CÁC CHỨC NĂNG MẠNG CỦA HỆ ĐIỀU HÀNH (12 CÂU) =================
+            // Mức Biết (Câu 45 - 49)
+            {
+                id: 'p1_45', num: 'Câu 45', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Biết',
+                q: 'Chức năng mạng của hệ điều hành cho phép người dùng làm gì?',
+                options: [
+                    'A. Chia sẻ thư mục, tệp, máy in cho người dùng khác trong mạng.',
+                    'B. Tăng dung lượng RAM.',
+                    'C. Thay đổi hình nền.',
+                    'D. Soạn thảo văn bản.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_46', num: 'Câu 46', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Biết',
+                q: 'Trên Windows, để chia sẻ một thư mục, ta nháy chuột phải vào thư mục rồi chọn:',
+                options: ['A. Rename.', 'B. Properties → thẻ Sharing.', 'C. Delete.', 'D. Send to → Desktop.'],
+                a: 1
+            },
+            {
+                id: 'p1_47', num: 'Câu 47', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Biết',
+                q: 'Nhóm tài nguyên nào có thể chia sẻ qua mạng bằng chức năng của hệ điều hành?',
+                options: ['A. Chỉ bàn phím.', 'B. Chỉ màn hình.', 'C. Tệp, thư mục, máy in, ổ đĩa.', 'D. Chỉ chuột.'],
+                a: 2
+            },
+            {
+                id: 'p1_48', num: 'Câu 48', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Biết',
+                q: 'Để truy cập thư mục chia sẻ TaiLieu trên máy có tên MAY01, ta gõ vào thanh địa chỉ của File Explorer:',
+                options: ['A. //MAY01/TaiLieu', 'B. \\\\MAY01\\TaiLieu', 'C. http://TaiLieu', 'D. C:\\MAY01'],
+                a: 1
+            },
+            {
+                id: 'p1_49', num: 'Câu 49', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Biết',
+                q: 'Khi chia sẻ thư mục với quyền Read, người dùng khác được phép:',
+                options: [
+                    'A. Xóa mọi tệp trong thư mục.',
+                    'B. Sửa nội dung tệp.',
+                    'C. Đổi tên máy tính.',
+                    'D. Xem, mở và sao chép tệp nhưng không sửa, xóa được.'
+                ],
+                a: 3
+            },
+
+            // Mức Hiểu (Câu 50 - 56)
+            {
+                id: 'p1_50', num: 'Câu 50', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Muốn các máy khác thấy máy mình trong mạng và truy cập được thư mục chia sẻ, cần bật hai tùy chọn nào trong Advanced sharing settings?',
+                options: [
+                    'A. Network discovery và File and printer sharing.',
+                    'B. Airplane mode và Bluetooth.',
+                    'C. Battery saver và Night light.',
+                    'D. Focus assist và Location.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_51', num: 'Câu 51', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Lợi ích chính của việc chia sẻ máy in qua mạng là gì?',
+                options: [
+                    'A. Máy in in nhanh gấp đôi.',
+                    'B. Nhiều máy tính dùng chung một máy in, tiết kiệm chi phí.',
+                    'C. Máy in không cần mực.',
+                    'D. Không cần bật máy in.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_52', num: 'Câu 52', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Giáo viên chia sẻ thư mục đề bài và muốn học sinh chỉ xem được, không sửa được. Nên cấp quyền nào?',
+                options: ['A. Full Control.', 'B. Change.', 'C. Read.', 'D. Không chia sẻ.'],
+                a: 2
+            },
+            {
+                id: 'p1_53', num: 'Câu 53', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Giáo viên muốn học sinh nộp bài (ghi tệp) vào thư mục chia sẻ. Quyền tối thiểu cần cấp là:',
+                options: ['A. Read.', 'B. Change (đọc và ghi).', 'C. Không cần cấp quyền.', 'D. Chỉ cần bật Network discovery.'],
+                a: 1
+            },
+            {
+                id: 'p1_54', num: 'Câu 54', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Chức năng Map network drive giúp người dùng làm gì?',
+                options: [
+                    'A. Gán thư mục chia sẻ thành một ổ đĩa (ví dụ Z:) để truy cập nhanh như ổ đĩa trên máy.',
+                    'B. Vẽ bản đồ mạng.',
+                    'C. Tăng tốc độ mạng.',
+                    'D. Định dạng ổ đĩa.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_55', num: 'Câu 55', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Vì sao không nên cấp quyền Full Control cho Everyone khi chia sẻ thư mục?',
+                options: [
+                    'A. Vì làm máy chạy chậm.',
+                    'B. Vì tốn điện.',
+                    'C. Vì bất kì ai trong mạng cũng có thể sửa, xóa dữ liệu, gây mất an toàn.',
+                    'D. Vì máy in sẽ ngừng hoạt động.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_56', num: 'Câu 56', part: 1, topicId: 'b2_2', topicName: 'Chủ đề B – Bài 2.2: Các chức năng mạng của hệ điều hành', level: 'Hiểu',
+                q: 'Máy A đã chia sẻ thư mục nhưng máy B không tìm thấy. Nguyên nhân có thể là gì?',
+                options: [
+                    'A. Màn hình máy B quá nhỏ.',
+                    'B. Máy A dùng chuột không dây.',
+                    'C. Máy B dùng hình nền tối.',
+                    'D. Hai máy không cùng mạng hoặc máy A đang tắt Network discovery, File and printer sharing.'
+                ],
+                a: 3
+            },
+
+            // ================= CHỦ ĐỀ D – GIỮ GÌN TÍNH NHÂN VĂN TRONG THẾ GIỚI ẢO (10 CÂU) =================
+            // Mức Biết (Câu 57 - 62)
+            {
+                id: 'p1_57', num: 'Câu 57', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Đâu là ưu điểm của giao tiếp trong thế giới ảo?',
+                options: [
+                    'A. Kết nối nhanh, mọi lúc mọi nơi, chi phí thấp, vượt qua khoảng cách địa lí.',
+                    'B. Luôn biết chính xác danh tính người đối diện.',
+                    'C. Không bao giờ xảy ra hiểu lầm.',
+                    'D. Không cần thiết bị hay kết nối mạng.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_58', num: 'Câu 58', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Đâu là nhược điểm của giao tiếp trong thế giới ảo?',
+                options: [
+                    'A. Trao đổi thông tin nhanh.',
+                    'B. Dễ hiểu lầm do thiếu biểu cảm, ngữ điệu; dễ gặp lừa đảo, tin giả; dễ nghiện mạng.',
+                    'C. Chi phí thấp.',
+                    'D. Kết nối được với nhiều người.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_59', num: 'Câu 59', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Hành vi nào thể hiện tính nhân văn khi tham gia thế giới ảo?',
+                options: [
+                    'A. Bình luận chế giễu ngoại hình người khác.',
+                    'B. Chia sẻ thông tin cá nhân của bạn khi chưa được đồng ý.',
+                    'C. Động viên, giúp đỡ người gặp khó khăn; tôn trọng người khác khi bình luận.',
+                    'D. Lan truyền tin chưa kiểm chứng.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_60', num: 'Câu 60', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Bắt nạt trực tuyến là gì?',
+                options: [
+                    'A. Dùng mạng xã hội, tin nhắn... để đe dọa, xúc phạm, bêu riếu người khác.',
+                    'B. Học trực tuyến cùng bạn.',
+                    'C. Mua sắm trực tuyến.',
+                    'D. Chơi trò chơi trực tuyến cùng bạn.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_61', num: 'Câu 61', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Hành vi nào KHÔNG nên làm trên mạng xã hội?',
+                options: [
+                    'A. Kiểm chứng tin trước khi chia sẻ.',
+                    'B. Tôn trọng quyền riêng tư của người khác.',
+                    'C. Dùng ngôn ngữ lịch sự.',
+                    'D. Đăng ảnh người khác kèm lời lẽ xúc phạm.'
+                ],
+                a: 3
+            },
+            {
+                id: 'p1_62', num: 'Câu 62', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Biết',
+                q: 'Cách hiểu nào đúng về "thế giới ảo"?',
+                options: [
+                    'A. Là thế giới không liên quan đến đời thực nên không cần quy tắc.',
+                    'B. Là môi trường con người giao tiếp, hoạt động thông qua Internet, mạng xã hội và các ứng dụng số.',
+                    'C. Chỉ là các trò chơi điện tử.',
+                    'D. Chỉ dành cho người làm nghề tin học.'
+                ],
+                a: 1
+            },
+
+            // Mức Vận dụng (Câu 63 - 66)
+            {
+                id: 'p1_63', num: 'Câu 63', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Vận dụng',
+                q: 'Bạn thấy một bạn cùng lớp bị lập nhóm chat để chế giễu. Cách ứng xử phù hợp là:',
+                options: [
+                    'A. Tham gia bình luận cho vui.',
+                    'B. Chia sẻ thêm nội dung cho người khác xem.',
+                    'C. Không tham gia, động viên bạn bị bắt nạt, lưu bằng chứng và báo thầy cô, cha mẹ.',
+                    'D. Đăng công khai thông tin cá nhân của người lập nhóm để trả đũa.'
+                ],
+                a: 2
+            },
+            {
+                id: 'p1_64', num: 'Câu 64', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Vận dụng',
+                q: 'Bạn nhận được tin "uống loại nước X chữa khỏi mọi bệnh" không rõ nguồn. Bạn nên:',
+                options: [
+                    'A. Chia sẻ ngay cho người thân.',
+                    'B. Kiểm tra nguồn tin chính thống, không chia sẻ khi chưa xác thực.',
+                    'C. Bình luận chửi bới người đăng.',
+                    'D. Thêm thông tin cho hấp dẫn rồi chia sẻ.'
+                ],
+                a: 1
+            },
+            {
+                id: 'p1_65', num: 'Câu 65', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Vận dụng',
+                q: 'Một người lạ kết bạn, khen ngợi liên tục rồi xin ảnh riêng tư và địa chỉ nhà. Bạn nên:',
+                options: [
+                    'A. Từ chối cung cấp, chặn và báo cáo tài khoản, kể với người lớn tin cậy.',
+                    'B. Gửi ảnh vì người đó có vẻ thân thiện.',
+                    'C. Hẹn gặp riêng để làm quen.',
+                    'D. Chỉ cung cấp địa chỉ nhà, không gửi ảnh.'
+                ],
+                a: 0
+            },
+            {
+                id: 'p1_66', num: 'Câu 66', part: 1, topicId: 'cd_d', topicName: 'Chủ đề D: Giữ gìn tính nhân văn trong thế giới ảo', level: 'Vận dụng',
+                q: 'Khi bất đồng quan điểm trong nhóm học tập trực tuyến, cách ứng xử nhân văn là:',
+                options: [
+                    'A. Dùng lời lẽ gay gắt để thắng tranh luận.',
+                    'B. Xóa bạn khỏi nhóm ngay lập tức.',
+                    'C. Chụp màn hình đoạn chat đăng lên mạng để chế giễu.',
+                    'D. Trình bày ý kiến lịch sự, lắng nghe, tôn trọng; tránh công kích cá nhân.'
+                ],
+                a: 3
+            }
+        ];
+
+        // Ngân hàng 10 câu Dạng 2 (Trắc nghiệm Đúng/Sai - 0.25 điểm mỗi ý a, b, c, d)
+        const PART2_QUESTIONS = [
+            // Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo (4 câu)
+            {
+                id: 'p2_1', num: 'Câu 1 (Dạng 2)', part: 2, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo',
+                passage: 'Một bệnh viện triển khai phần mềm AI phân tích ảnh X-quang phổi để hỗ trợ bác sĩ phát hiện sớm tổn thương.',
+                statements: [
+                    { label: 'a)', text: 'Đây là ứng dụng AI trong lĩnh vực y tế (chẩn đoán bệnh).', ans: true },
+                    { label: 'b)', text: 'Phần mềm có thể đưa ra kết quả nhờ đã học từ rất nhiều ảnh X-quang được bác sĩ chẩn đoán trước đó.', ans: true },
+                    { label: 'c)', text: 'Vì AI chẩn đoán nhanh, bệnh viện có thể bỏ hoàn toàn vai trò của bác sĩ trong quyết định điều trị.', ans: false },
+                    { label: 'd)', text: 'Nếu dữ liệu huấn luyện chủ yếu lấy từ một nhóm bệnh nhân, kết quả chẩn đoán với nhóm bệnh nhân khác có thể kém chính xác.', ans: true }
+                ]
+            },
+            {
+                id: 'p2_2', num: 'Câu 2 (Dạng 2)', part: 2, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo',
+                passage: 'Trợ lí ảo trên điện thoại (Siri, Google Assistant...) được nhiều người sử dụng.',
+                statements: [
+                    { label: 'a)', text: 'Trợ lí ảo sử dụng kĩ thuật nhận dạng tiếng nói và xử lí ngôn ngữ tự nhiên.', ans: true },
+                    { label: 'b)', text: 'Trợ lí ảo là ví dụ của AI tổng quát (AI mạnh) vì làm được nhiều việc.', ans: false },
+                    { label: 'c)', text: 'Khi người dùng nói "Đặt báo thức 6 giờ sáng", trợ lí ảo cần hiểu ý định (đặt báo thức) và thông tin thời gian rồi mới thực hiện.', ans: true },
+                    { label: 'd)', text: 'Để bảo vệ quyền riêng tư, người dùng nên xem lại các quyền truy cập micro, danh bạ, vị trí đã cấp cho trợ lí ảo.', ans: true }
+                ]
+            },
+            {
+                id: 'p2_3', num: 'Câu 3 (Dạng 2)', part: 2, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo',
+                passage: 'Trên mạng xuất hiện nhiều video "deepfake" giả mạo người nổi tiếng và cả người thân để lừa đảo.',
+                statements: [
+                    { label: 'a)', text: 'Deepfake là công nghệ dùng AI tạo hình ảnh, video, giọng nói giả mạo giống thật.', ans: true },
+                    { label: 'b)', text: 'Mọi video có hình ảnh và giọng nói giống người thật đều là video thật.', ans: false },
+                    { label: 'c)', text: 'Khi nhận cuộc gọi video của người thân nhờ chuyển tiền gấp, nên xác minh bằng cách gọi lại số điện thoại quen thuộc.', ans: true },
+                    { label: 'd)', text: 'Chia sẻ video deepfake bôi nhọ người khác chỉ là trò đùa vô hại.', ans: false }
+                ]
+            },
+            {
+                id: 'p2_4', num: 'Câu 4 (Dạng 2)', part: 2, topicId: 'b1_1', topicName: 'Chủ đề A – Bài 1.1: Giới thiệu trí tuệ nhân tạo',
+                passage: 'Hộp thư Gmail tự động đưa các thư quảng cáo, lừa đảo vào mục Thư rác (Spam).',
+                statements: [
+                    { label: 'a)', text: 'Bộ lọc thư rác là một ứng dụng của AI.', ans: true },
+                    { label: 'b)', text: 'Khi người dùng đánh dấu một thư là "Thư rác", hệ thống có thêm dữ liệu để học và phân loại tốt hơn.', ans: true },
+                    { label: 'c)', text: 'Bộ lọc thư rác hoạt động theo một quy tắc cố định và không bao giờ thay đổi.', ans: false },
+                    { label: 'd)', text: 'Thư quan trọng có thể bị đưa nhầm vào mục Spam, vì vậy thỉnh thoảng nên kiểm tra mục này.', ans: true }
+                ]
+            },
+
+            // Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số (3 câu)
+            {
+                id: 'p2_5', num: 'Câu 5 (Dạng 2)', part: 2, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số',
+                passage: 'Bạn An muốn chép ảnh từ điện thoại Android sang laptop chạy Windows bằng cáp USB.',
+                statements: [
+                    { label: 'a)', text: 'An có thể dùng cáp USB (loại hỗ trợ truyền dữ liệu) để nối điện thoại với laptop.', ans: true },
+                    { label: 'b)', text: 'Sau khi cắm cáp, cần chọn chế độ "Truyền tệp" trên điện thoại thì laptop mới hiển thị bộ nhớ của điện thoại.', ans: true },
+                    { label: 'c)', text: 'Nếu laptop chỉ sạc pin cho điện thoại, nguyên nhân chắc chắn là cáp bị hỏng.', ans: false },
+                    { label: 'd)', text: 'Sau khi kết nối thành công, An mở File Explorer, vào thiết bị điện thoại rồi mở thư mục DCIM để tìm ảnh.', ans: true }
+                ]
+            },
+            {
+                id: 'p2_6', num: 'Câu 6 (Dạng 2)', part: 2, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số',
+                passage: 'Lớp học muốn trình chiếu bài thuyết trình từ laptop lên tivi thông minh.',
+                statements: [
+                    { label: 'a)', text: 'Có thể nối laptop với tivi bằng cáp HDMI.', ans: true },
+                    { label: 'b)', text: 'Khi dùng cáp HDMI, cần chọn nguồn đầu vào (Input/Source) trên tivi đúng cổng HDMI đã cắm.', ans: true },
+                    { label: 'c)', text: 'Trên Windows, nhấn Windows + P để chọn chế độ hiển thị như Duplicate (nhân bản) hoặc Extend (mở rộng).', ans: true },
+                    { label: 'd)', text: 'Muốn chiếu màn hình không dây lên tivi thì bắt buộc phải dùng cáp quang.', ans: false }
+                ]
+            },
+            {
+                id: 'p2_7', num: 'Câu 7 (Dạng 2)', part: 2, topicId: 'b1_2', topicName: 'Chủ đề A – Bài 1.2: Thực hành kết nối thiết bị số',
+                passage: 'Bạn Bình mới mua một vòng đeo tay thông minh theo dõi sức khỏe.',
+                statements: [
+                    { label: 'a)', text: 'Vòng đeo tay thông minh thường kết nối với điện thoại qua Bluetooth.', ans: true },
+                    { label: 'b)', text: 'Ghép đôi Bluetooth cần bật Bluetooth trên cả hai thiết bị.', ans: true },
+                    { label: 'c)', text: 'Khi ghép đôi, nếu mã xác nhận hiển thị trên hai thiết bị không trùng nhau thì vẫn nên bấm đồng ý.', ans: false },
+                    { label: 'd)', text: 'Dữ liệu như nhịp tim, giấc ngủ được đồng bộ về điện thoại qua ứng dụng đi kèm vòng đeo tay.', ans: true }
+                ]
+            },
+
+            // Chủ đề B – Bài 2.3: Thiết lập kết nối và sử dụng mạng trên thiết bị di động (3 câu)
+            {
+                id: 'p2_8', num: 'Câu 8 (Dạng 2)', part: 2, topicId: 'b2_3', topicName: 'Chủ đề B – Bài 2.3: Thiết lập kết nối mạng trên thiết bị di động',
+                passage: 'Học sinh cần kết nối điện thoại vào mạng Wi-Fi của thư viện trường.',
+                statements: [
+                    { label: 'a)', text: 'Để kết nối, vào Cài đặt → Wi-Fi, bật Wi-Fi và chọn đúng tên mạng (SSID).', ans: true },
+                    { label: 'b)', text: 'Mạng Wi-Fi có biểu tượng ổ khóa sẽ yêu cầu nhập mật khẩu khi kết nối.', ans: true },
+                    { label: 'c)', text: 'Khi bật Chế độ máy bay, điện thoại vẫn luôn giữ kết nối dữ liệu di động 4G.', ans: false },
+                    { label: 'd)', text: 'Không nên dùng Wi-Fi công cộng không đặt mật khẩu để thực hiện giao dịch ngân hàng.', ans: true }
+                ]
+            },
+            {
+                id: 'p2_9', num: 'Câu 9 (Dạng 2)', part: 2, topicId: 'b2_3', topicName: 'Chủ đề B – Bài 2.3: Thiết lập kết nối mạng trên thiết bị di động',
+                passage: 'Bạn Lan bật Điểm phát sóng di động (Hotspot) trên điện thoại để laptop truy cập Internet.',
+                statements: [
+                    { label: 'a)', text: 'Điện thoại có thể chia sẻ kết nối dữ liệu di động cho thiết bị khác qua Điểm phát sóng di động.', ans: true },
+                    { label: 'b)', text: 'Khi bật Hotspot, điện thoại đóng vai trò tương tự một điểm truy cập không dây (Access Point).', ans: true },
+                    { label: 'c)', text: 'Lan nên đặt mật khẩu mạnh cho Hotspot để tránh người lạ truy cập.', ans: true },
+                    { label: 'd)', text: 'Laptop dùng Internet qua Hotspot không làm tiêu tốn dung lượng dữ liệu di động của điện thoại phát.', ans: false }
+                ]
+            },
+            {
+                id: 'p2_10', num: 'Câu 10 (Dạng 2)', part: 2, topicId: 'b2_3', topicName: 'Chủ đề B – Bài 2.3: Thiết lập kết nối mạng trên thiết bị di động',
+                passage: 'Điện thoại thông minh có nhiều cách kết nối và sử dụng mạng.',
+                statements: [
+                    { label: 'a)', text: 'Điện thoại có thể truy cập Internet qua Wi-Fi hoặc dữ liệu di động (3G/4G/5G).', ans: true },
+                    { label: 'b)', text: 'Khi đã kết nối Wi-Fi ổn định, điện thoại thường ưu tiên dùng Wi-Fi thay cho dữ liệu di động.', ans: true },
+                    { label: 'c)', text: 'Có thể chia sẻ tệp giữa hai điện thoại ở gần nhau bằng Bluetooth hoặc tính năng chia sẻ nhanh (Quick Share, AirDrop).', ans: true },
+                    { label: 'd)', text: 'Điện thoại không có thẻ SIM thì không thể truy cập Internet bằng bất kì cách nào.', ans: false }
+                ]
+            }
+        ];
+
+        const ALL_QUESTIONS = [...PART1_QUESTIONS, ...PART2_QUESTIONS];
+
+        // Trạng thái ứng dụng
+        let appMode = 'practice'; // 'practice' | 'exam' | 'key'
+        let currentPackageId = 'exam';
+        let activeQuestions = [];
+        let userMcqAnswers = {}; // { [questionId]: optionIndex }
+        let userTfAnswers = {};  // { [questionId]: { 0: bool, 1: bool, 2: bool, 3: bool } }
+        let isExamSubmitted = false;
+        let searchQuery = '';
+        let timerInterval = null;
+        let remainingSeconds = 45 * 60;
+
+        const PACKAGE_LABELS = {
+            exam: '🎲 Đề Thi Thử Chuẩn Ma Trận GK1 (31 Câu)',
+            all: '📚 Trọn Bộ Đề Cương Tin Học 12 (76 Câu)',
+            b1_1: '🤖 Bài 1.1: Giới thiệu Trí tuệ nhân tạo (28 Câu)',
+            b1_2: '🔌 Bài 1.2: Thực hành kết nối thiết bị số (9 Câu)',
+            b2_1: '🌐 Bài 2.1: Thiết bị và giao thức mạng (14 Câu)',
+            b2_2: '💻 Bài 2.2: Các chức năng mạng của HĐH (12 Câu)',
+            b2_3: '📱 Bài 2.3: Kết nối mạng trên thiết bị di động (3 Câu)',
+            cd_d: '🤝 Chủ đề D: Tính nhân văn trong thế giới ảo (10 Câu)'
+        };
+
+        // Hàm trộn mảng ngẫu nhiên
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function pickRandom(arr, count) {
+            return shuffleArray(arr).slice(0, count);
+        }
+
+        // Tạo đề thi thử 31 câu chuẩn ma trận đặc tả Tin học 12
+        function buildMatrixExamQuestions() {
+            // Bài 1.1 (AI): 6 Biết + 2 Hiểu + 2 VD (10 câu Dạng 1)
+            const b1_1_biet = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b1_1' && q.level === 'Biết'), 6);
+            const b1_1_hieu = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b1_1' && q.level === 'Hiểu'), 2);
+            const b1_1_vd   = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b1_1' && q.level === 'Vận dụng'), 2);
+
+            // Bài 1.2 (Kết nối thiết bị số): 2 câu Dạng 1
+            const b1_2_vd   = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b1_2'), 2);
+
+            // Bài 2.1 (Thiết bị & giao thức mạng): 2 Biết + 4 Hiểu (6 câu Dạng 1)
+            const b2_1_biet = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b2_1' && q.level === 'Biết'), 2);
+            const b2_1_hieu = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b2_1' && q.level === 'Hiểu'), 4);
+
+            // Bài 2.2 (Chức năng mạng HĐH): 2 Biết + 3 Hiểu (5 câu Dạng 1)
+            const b2_2_biet = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b2_2' && q.level === 'Biết'), 2);
+            const b2_2_hieu = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'b2_2' && q.level === 'Hiểu'), 3);
+
+            // Chủ đề D (Nhân văn trong thế giới ảo): 3 Biết + 2 VD (5 câu Dạng 1)
+            const cd_d_biet = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'cd_d' && q.level === 'Biết'), 3);
+            const cd_d_vd   = pickRandom(PART1_QUESTIONS.filter(q => q.topicId === 'cd_d' && q.level === 'Vận dụng'), 2);
+
+            const selectedPart1 = [
+                ...b1_1_biet, ...b1_1_hieu, ...b1_1_vd,
+                ...b1_2_vd,
+                ...b2_1_biet, ...b2_1_hieu,
+                ...b2_2_biet, ...b2_2_hieu,
+                ...cd_d_biet, ...cd_d_vd
+            ];
+
+            // 3 câu Dạng 2: 1 câu Bài 1.1 + 1 câu Bài 1.2 + 1 câu Bài 2.3
+            const p2_b1_1 = pickRandom(PART2_QUESTIONS.filter(q => q.topicId === 'b1_1'), 1);
+            const p2_b1_2 = pickRandom(PART2_QUESTIONS.filter(q => q.topicId === 'b1_2'), 1);
+            const p2_b2_3 = pickRandom(PART2_QUESTIONS.filter(q => q.topicId === 'b2_3'), 1);
+
+            const selectedPart2 = [...p2_b1_1, ...p2_b1_2, ...p2_b2_3];
+
+            return [...selectedPart1, ...selectedPart2];
+        }
+
+        // Mở 1 gói câu hỏi từ Sảnh và chuyển sang Màn hình Làm bài
+        function openPackage(pkgId) {
+            currentPackageId = pkgId;
+            userMcqAnswers = {};
+            userTfAnswers = {};
+            isExamSubmitted = false;
+            searchQuery = '';
+
+            const sInput = document.getElementById('search-input');
+            const mInput = document.getElementById('mobile-search-input');
+            if (sInput) sInput.value = '';
+            if (mInput) mInput.value = '';
+            document.getElementById('clear-search-btn')?.classList.add('hidden');
+            document.getElementById('score-banner').classList.add('hidden');
+
+            if (pkgId === 'exam') {
+                activeQuestions = buildMatrixExamQuestions();
+            } else if (pkgId === 'all') {
+                activeQuestions = [...ALL_QUESTIONS];
+            } else {
+                activeQuestions = ALL_QUESTIONS.filter(q => q.topicId === pkgId);
+            }
+
+            document.getElementById('current-pkg-title').textContent = PACKAGE_LABELS[pkgId] || 'Gói Ôn Tập';
+            document.getElementById('lobby-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+
+            manageTimerForMode();
+            renderQuizScreen();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Quay lại Sảnh chọn gói
+        function backToLobby() {
+            stopExamTimer();
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('lobby-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Chuyển chế độ học/thi ('practice' | 'exam' | 'key')
+        function setAppMode(mode) {
+            appMode = mode;
+            if (mode !== 'exam') {
+                isExamSubmitted = false;
+                document.getElementById('score-banner').classList.add('hidden');
+            }
+            updateModeButtonsUI();
+            if (!document.getElementById('quiz-view').classList.contains('hidden')) {
+                manageTimerForMode();
+                renderQuizScreen();
+            }
+        }
+
+        function updateModeButtonsUI() {
+            const lobbyBtns = {
+                practice: document.getElementById('lobby-mode-practice'),
+                exam: document.getElementById('lobby-mode-exam'),
+                key: document.getElementById('lobby-mode-key')
+            };
+            Object.keys(lobbyBtns).forEach(k => {
+                const btn = lobbyBtns[k];
+                if (!btn) return;
+                if (k === appMode) {
+                    btn.className = 'text-left p-3 rounded-xl border-2 transition flex items-start gap-2.5 bg-emerald-500/20 border-emerald-400 text-white shadow';
+                } else {
+                    btn.className = 'text-left p-3 rounded-xl border-2 transition flex items-start gap-2.5 bg-slate-800/70 border-slate-700 text-slate-200 hover:border-sky-500/50';
+                }
+            });
+
+            const quizBtns = {
+                practice: document.getElementById('quiz-mode-practice'),
+                exam: document.getElementById('quiz-mode-exam'),
+                key: document.getElementById('quiz-mode-key')
+            };
+            Object.keys(quizBtns).forEach(k => {
+                const btn = quizBtns[k];
+                if (!btn) return;
+                if (k === appMode) {
+                    btn.className = 'px-2 py-1 rounded-md font-extrabold transition bg-emerald-400 text-slate-950';
+                } else {
+                    btn.className = 'px-2 py-1 rounded-md font-bold transition text-slate-300 hover:text-white';
+                }
+            });
+        }
+
+        // Quản lý đồng hồ đếm ngược 45 phút khi ở chế độ Thi Thử
+        function manageTimerForMode() {
+            const timerBadge = document.getElementById('exam-timer-badge');
+            if (appMode === 'exam' && !isExamSubmitted) {
+                timerBadge.classList.remove('hidden');
+                startExamTimer(45 * 60);
+            } else {
+                timerBadge.classList.add('hidden');
+                stopExamTimer();
+            }
+        }
+
+        function startExamTimer(seconds) {
+            stopExamTimer();
+            remainingSeconds = seconds;
+            updateTimerText();
+            timerInterval = setInterval(() => {
+                remainingSeconds--;
+                updateTimerText();
+                if (remainingSeconds <= 0) {
+                    stopExamTimer();
+                    submitExamNow();
+                }
+            }, 1000);
+        }
+
+        function stopExamTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimerText() {
+            const m = Math.floor(Math.max(0, remainingSeconds) / 60);
+            const s = Math.max(0, remainingSeconds) % 60;
+            const el = document.getElementById('timer-text');
+            if (el) {
+                el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            }
+        }
+
+        // Kiểm tra câu hỏi đã trả lời chưa
+        function isQuestionAnswered(q) {
+            if (q.part === 1) {
+                return userMcqAnswers[q.id] !== undefined;
+            } else {
+                const tf = userTfAnswers[q.id];
+                if (!tf) return false;
+                return tf[0] !== undefined && tf[1] !== undefined && tf[2] !== undefined && tf[3] !== undefined;
+            }
+        }
+
+        // Kiểm tra câu hỏi đã chọn ít nhất 1 ý (cho câu Đúng/Sai)
+        function isQuestionPartiallyAnswered(q) {
+            if (q.part === 1) return userMcqAnswers[q.id] !== undefined;
+            const tf = userTfAnswers[q.id];
+            return tf && Object.keys(tf).length > 0;
+        }
+
+        // Kiểm tra câu hỏi đúng hoàn toàn
+        function isQuestionFullyCorrect(q) {
+            if (q.part === 1) {
+                return userMcqAnswers[q.id] === q.a;
+            } else {
+                const tf = userTfAnswers[q.id];
+                if (!tf) return false;
+                return q.statements.every((st, idx) => tf[idx] === st.ans);
+            }
+        }
+
+        // Chọn đáp án câu Dạng 1 (4 phương án)
+        function selectMcqOption(qId, optIdx) {
+            if (appMode === 'key') return;
+            userMcqAnswers[qId] = optIdx;
+            renderQuizScreen();
+        }
+
+        // Chọn Đúng/Sai cho câu Dạng 2
+        function selectTfOption(qId, stIdx, val) {
+            if (appMode === 'key') return;
+            if (!userTfAnswers[qId]) userTfAnswers[qId] = {};
+            userTfAnswers[qId][stIdx] = val;
+            renderQuizScreen();
+        }
+
+        // Render danh sách câu hỏi & Bảng điều hướng
+        function renderQuizScreen() {
+            const listEl = document.getElementById('questions-list');
+            const filtered = activeQuestions.filter(q => {
+                if (!searchQuery.trim()) return true;
+                const kw = searchQuery.toLowerCase();
+                if (q.part === 1) {
+                    return q.q.toLowerCase().includes(kw) ||
+                        q.num.toLowerCase().includes(kw) ||
+                        q.options.some(o => o.toLowerCase().includes(kw));
+                } else {
+                    return q.passage.toLowerCase().includes(kw) ||
+                        q.num.toLowerCase().includes(kw) ||
+                        q.statements.some(s => s.text.toLowerCase().includes(kw));
+                }
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="bg-white rounded-2xl p-8 text-center border border-slate-200">
+                        <p class="text-slate-600 font-bold text-sm">Không tìm thấy câu hỏi nào khớp với từ khóa "${searchQuery}".</p>
+                        <button type="button" onclick="clearSearch()" class="mt-3 px-4 py-2 rounded-xl bg-sky-500 text-slate-950 font-black text-xs">Xóa bộ lọc tìm kiếm</button>
+                    </div>
+                `;
+                renderNavigatorPalette();
+                return;
+            }
+
+            let html = '';
+            let p1Counter = 0;
+            let p2Counter = 0;
+
+            filtered.forEach((q, idx) => {
+                const displayIndex = activeQuestions.indexOf(q) + 1;
+                if (q.part === 1) p1Counter++;
+                else p2Counter++;
+
+                const showSectionHeader =
+                    (q.part === 1 && p1Counter === 1) ||
+                    (q.part === 2 && p2Counter === 1);
+
+                if (showSectionHeader) {
+                    if (q.part === 1) {
+                        html += `
+                            <div class="bg-gradient-to-r from-sky-900 to-indigo-900 text-white px-4 py-2.5 rounded-xl font-black text-xs sm:text-sm uppercase tracking-wider shadow-sm flex items-center justify-between">
+                                <span>PHẦN A – DẠNG 1: TRẮC NGHIỆM NHIỀU LỰA CHỌN (0,25 ĐIỂM / CÂU)</span>
+                                <span class="text-sky-300 text-xs">Chọn 1 phương án đúng</span>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="bg-gradient-to-r from-purple-900 to-indigo-950 text-white px-4 py-2.5 rounded-xl font-black text-xs sm:text-sm uppercase tracking-wider shadow-sm flex items-center justify-between mt-4">
+                                <span>PHẦN B – DẠNG 2: TRẮC NGHIỆM ĐÚNG / SAI (0,25 ĐIỂM / Ý a, b, c, d)</span>
+                                <span class="text-purple-200 text-xs">Mỗi câu 4 ý = 1,0 điểm</span>
+                            </div>
+                        `;
+                    }
+                }
+
+                if (q.part === 1) {
+                    html += renderMcqCard(q, displayIndex);
+                } else {
+                    html += renderTfCard(q, displayIndex);
+                }
+            });
+
+            listEl.innerHTML = html;
+            renderNavigatorPalette();
+        }
+
+        // Render thẻ câu hỏi Dạng 1 (4 lựa chọn)
+        function renderMcqCard(q, displayIndex) {
+            const userChoice = userMcqAnswers[q.id];
+            const hasAnswered = userChoice !== undefined;
+            const revealResult = appMode === 'key' || (appMode === 'practice' && hasAnswered) || (appMode === 'exam' && isExamSubmitted);
+
+            let statusBadge = '';
+            if (revealResult) {
+                if (appMode === 'key') {
+                    statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 font-black text-[11px]">Đáp án đúng: ${['A', 'B', 'C', 'D'][q.a]}</span>`;
+                } else if (hasAnswered && userChoice === q.a) {
+                    statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-emerald-500 text-white font-black text-[11px] shadow-sm">✓ ĐÚNG (+0,25đ)</span>`;
+                } else if (hasAnswered && userChoice !== q.a) {
+                    statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-rose-500 text-white font-black text-[11px] shadow-sm">✗ SAI (Đúng: ${['A', 'B', 'C', 'D'][q.a]})</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 font-black text-[11px]">Chưa chọn (Đúng: ${['A', 'B', 'C', 'D'][q.a]})</span>`;
+                }
+            } else if (hasAnswered) {
+                statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300 font-extrabold text-[11px]">Đã chọn ${['A', 'B', 'C', 'D'][userChoice]}</span>`;
+            }
+
+            const optionsHtml = q.options.map((optText, optIdx) => {
+                const isCorrectOpt = optIdx === q.a;
+                const isSelectedOpt = userChoice === optIdx;
+
+                let btnStyle = 'bg-slate-50 hover:bg-sky-50/70 border-slate-200 text-slate-800';
+                let badgeHtml = '';
+
+                if (revealResult) {
+                    if (appMode === 'key') {
+                        // Chế độ Xem Đáp Án Xanh/Đỏ: Đúng tô Xanh lá #10b981, Sai tô Đỏ #ef4444
+                        if (isCorrectOpt) {
+                            btnStyle = 'bg-emerald-500 border-emerald-600 text-white font-black shadow-md';
+                            badgeHtml = `<span class="ml-auto px-2 py-0.5 rounded bg-white text-emerald-700 text-[11px] font-black shrink-0">✓ ĐÚNG</span>`;
+                        } else {
+                            btnStyle = 'bg-rose-50 border-rose-300 text-rose-800 font-semibold';
+                            badgeHtml = `<span class="ml-auto px-2 py-0.5 rounded bg-rose-500 text-white text-[10px] font-extrabold shrink-0">✗ SAI</span>`;
+                        }
+                    } else {
+                        // Chế độ Chấm Tức Thì hoặc Đã Nộp Bài Thi Thử
+                        if (isCorrectOpt) {
+                            btnStyle = 'bg-emerald-500 border-emerald-600 text-white font-black shadow-md';
+                            badgeHtml = `<span class="ml-auto px-2 py-0.5 rounded bg-white text-emerald-700 text-[11px] font-black shrink-0">✓ ĐÁP ÁN ĐÚNG</span>`;
+                        } else if (isSelectedOpt && !isCorrectOpt) {
+                            btnStyle = 'bg-rose-500 border-rose-600 text-white font-black shadow-md';
+                            badgeHtml = `<span class="ml-auto px-2 py-0.5 rounded bg-white text-rose-700 text-[11px] font-black shrink-0">✗ BẠN CHỌN SAI</span>`;
+                        } else {
+                            btnStyle = 'bg-slate-50 border-slate-200 text-slate-500 opacity-75';
+                        }
+                    }
+                } else if (isSelectedOpt) {
+                    btnStyle = 'bg-sky-600 border-sky-700 text-white font-bold shadow-sm';
+                    badgeHtml = `<span class="ml-auto px-2 py-0.5 rounded bg-white text-sky-700 text-[11px] font-black shrink-0">Đang chọn</span>`;
+                }
+
+                return `
+                    <button
+                        type="button"
+                        onclick="selectMcqOption('${q.id}', ${optIdx})"
+                        class="option-btn w-full text-left p-3 sm:p-3.5 rounded-xl border-2 flex items-center justify-between gap-3 text-xs sm:text-sm ${btnStyle}"
+                    >
+                        <span class="leading-relaxed">${optText}</span>
+                        ${badgeHtml}
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <article id="qcard-${q.id}" class="question-card bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white font-black text-xs">
+                                Câu ${displayIndex} (${q.num})
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-600 font-bold text-[11px]">
+                                ${q.topicName}
+                            </span>
+                            ${q.level ? `<span class="px-2 py-0.5 rounded-md bg-sky-50 text-sky-700 border border-sky-200 font-bold text-[10px]">Mức ${q.level}</span>` : ''}
+                        </div>
+                        ${statusBadge}
+                    </div>
+
+                    <div class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">
+                        ${q.q}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        ${optionsHtml}
+                    </div>
+                </article>
+            `;
+        }
+
+        // Render thẻ câu hỏi Dạng 2 (Đúng/Sai - 4 ý a, b, c, d)
+        function renderTfCard(q, displayIndex) {
+            const tfUser = userTfAnswers[q.id] || {};
+            const statementsHtml = q.statements.map((st, stIdx) => {
+                const userVal = tfUser[stIdx];
+                const hasChosenSt = userVal !== undefined;
+                const revealSt = appMode === 'key' || (appMode === 'practice' && hasChosenSt) || (appMode === 'exam' && isExamSubmitted);
+
+                let rowStyle = 'bg-slate-50 border-slate-200';
+                let resultTag = '';
+
+                if (revealSt) {
+                    if (appMode === 'key') {
+                        if (st.ans === true) {
+                            rowStyle = 'bg-emerald-50 border-emerald-400';
+                            resultTag = `<span class="px-2.5 py-1 rounded-lg bg-emerald-500 text-white font-black text-xs shrink-0">✓ MỆNH ĐỀ ĐÚNG</span>`;
+                        } else {
+                            rowStyle = 'bg-rose-50 border-rose-400';
+                            resultTag = `<span class="px-2.5 py-1 rounded-lg bg-rose-500 text-white font-black text-xs shrink-0">✗ MỆNH ĐỀ SAI</span>`;
+                        }
+                    } else if (hasChosenSt) {
+                        const isRight = userVal === st.ans;
+                        if (isRight) {
+                            rowStyle = 'bg-emerald-50 border-emerald-500';
+                            resultTag = `<span class="px-2.5 py-1 rounded-lg bg-emerald-500 text-white font-black text-xs shrink-0">✓ BẠN CHỌN ĐÚNG (+0,25đ)</span>`;
+                        } else {
+                            rowStyle = 'bg-rose-50 border-rose-500';
+                            resultTag = `<span class="px-2.5 py-1 rounded-lg bg-rose-500 text-white font-black text-xs shrink-0">✗ BẠN CHỌN SAI (Đáp án: ${st.ans ? 'Đúng' : 'Sai'})</span>`;
+                        }
+                    } else {
+                        rowStyle = 'bg-amber-50 border-amber-300';
+                        resultTag = `<span class="px-2.5 py-1 rounded-lg bg-amber-500 text-slate-950 font-black text-xs shrink-0">Chưa chọn (Đáp án: ${st.ans ? 'Đúng' : 'Sai'})</span>`;
+                    }
+                }
+
+                // Style cho 2 nút Đúng / Sai
+                let trueBtnClass = 'bg-white hover:bg-emerald-50 text-slate-700 border-slate-300';
+                let falseBtnClass = 'bg-white hover:bg-rose-50 text-slate-700 border-slate-300';
+
+                if (revealSt) {
+                    if (st.ans === true) {
+                        trueBtnClass = 'bg-emerald-500 text-white border-emerald-600 font-black shadow';
+                        if (userVal === false) {
+                            falseBtnClass = 'bg-rose-500 text-white border-rose-600 font-black shadow';
+                        }
+                    } else {
+                        falseBtnClass = 'bg-emerald-500 text-white border-emerald-600 font-black shadow';
+                        if (userVal === true) {
+                            trueBtnClass = 'bg-rose-500 text-white border-rose-600 font-black shadow';
+                        }
+                    }
+                } else {
+                    if (userVal === true) {
+                        trueBtnClass = 'bg-sky-600 text-white border-sky-700 font-black shadow';
+                    } else if (userVal === false) {
+                        falseBtnClass = 'bg-sky-600 text-white border-sky-700 font-black shadow';
+                    }
+                }
+
+                return `
+                    <div class="p-3 sm:p-3.5 rounded-xl border-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${rowStyle}">
+                        <div class="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed">
+                            <span class="font-black text-purple-800 mr-1">${st.label}</span>
+                            ${st.text}
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            ${resultTag}
+                            <button
+                                type="button"
+                                onclick="selectTfOption('${q.id}', ${stIdx}, true)"
+                                class="px-3 py-1.5 rounded-lg border-2 text-xs font-bold transition ${trueBtnClass}"
+                            >
+                                Đúng
+                            </button>
+                            <button
+                                type="button"
+                                onclick="selectTfOption('${q.id}', ${stIdx}, false)"
+                                class="px-3 py-1.5 rounded-lg border-2 text-xs font-bold transition ${falseBtnClass}"
+                            >
+                                Sai
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <article id="qcard-${q.id}" class="question-card bg-white rounded-2xl p-4 sm:p-5 shadow-sm border-2 border-purple-200 space-y-3.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-purple-900 text-white font-black text-xs">
+                                Câu ${displayIndex} (${q.num})
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-purple-50 text-purple-800 border border-purple-200 font-bold text-[11px]">
+                                ${q.topicName}
+                            </span>
+                        </div>
+                        <span class="text-[11px] font-extrabold text-purple-700">4 ý × 0,25đ = 1,0 điểm</span>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900 text-slate-100 font-semibold text-xs sm:text-sm leading-relaxed border-l-4 border-purple-400">
+                        ${q.passage}
+                    </div>
+
+                    <div class="space-y-2.5">
+                        ${statementsHtml}
+                    </div>
+                </article>
+            `;
+        }
+
+        // Render Bảng điều hướng câu hỏi bên phải & Cập nhật bộ đếm trên thanh Top Bar
+        function renderNavigatorPalette() {
+            const paletteEl = document.getElementById('palette-container');
+            const total = activeQuestions.length;
+            let answeredCount = 0;
+
+            const buttonsHtml = activeQuestions.map((q, idx) => {
+                const answered = isQuestionAnswered(q);
+                const partial = isQuestionPartiallyAnswered(q);
+                if (answered) answeredCount++;
+
+                let btnClass = 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200';
+
+                if (appMode === 'key') {
+                    btnClass = 'bg-emerald-500 text-white border-emerald-600 font-black';
+                } else if ((appMode === 'practice' && partial) || (appMode === 'exam' && isExamSubmitted)) {
+                    if (!partial) {
+                        btnClass = 'bg-amber-100 text-amber-800 border-amber-300 font-bold';
+                    } else if (isQuestionFullyCorrect(q)) {
+                        btnClass = 'bg-emerald-500 text-white border-emerald-600 font-black';
+                    } else {
+                        btnClass = 'bg-rose-500 text-white border-rose-600 font-black';
+                    }
+                } else if (answered) {
+                    btnClass = 'bg-sky-600 text-white border-sky-700 font-black';
+                } else if (partial) {
+                    btnClass = 'bg-sky-100 text-sky-800 border-sky-300 font-bold';
+                }
+
+                return `
+                    <button
+                        type="button"
+                        onclick="scrollToQuestion('${q.id}')"
+                        class="h-8 rounded-lg border text-xs font-bold transition flex items-center justify-center ${btnClass}"
+                    >
+                        ${idx + 1}
+                    </button>
+                `;
+            }).join('');
+
+            if (paletteEl) paletteEl.innerHTML = buttonsHtml;
+
+            const topBadge = document.getElementById('top-progress-badge');
+            const sideBadge = document.getElementById('sidebar-stats-badge');
+            if (topBadge) topBadge.textContent = `Đã làm: ${answeredCount}/${total}`;
+            if (sideBadge) sideBadge.textContent = `${answeredCount} / ${total}`;
+        }
+
+        function scrollToQuestion(qId) {
+            const el = document.getElementById(`qcard-${qId}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Chấm điểm toàn bộ gói đang mở (0.25đ cho mỗi câu Dạng 1 & 0.25đ cho mỗi ý a/b/c/d Dạng 2)
+        function submitExamNow() {
+            stopExamTimer();
+            isExamSubmitted = true;
+
+            let correctItems = 0;
+            let wrongItems = 0;
+            let unansweredItems = 0;
+            let earnedPoints = 0;
+            let maxPoints = 0;
+
+            activeQuestions.forEach(q => {
+                if (q.part === 1) {
+                    maxPoints += 0.25;
+                    const choice = userMcqAnswers[q.id];
+                    if (choice === undefined) {
+                        unansweredItems++;
+                    } else if (choice === q.a) {
+                        correctItems++;
+                        earnedPoints += 0.25;
+                    } else {
+                        wrongItems++;
+                    }
+                } else {
+                    const tf = userTfAnswers[q.id] || {};
+                    q.statements.forEach((st, idx) => {
+                        maxPoints += 0.25;
+                        const uVal = tf[idx];
+                        if (uVal === undefined) {
+                            unansweredItems++;
+                        } else if (uVal === st.ans) {
+                            correctItems++;
+                            earnedPoints += 0.25;
+                        } else {
+                            wrongItems++;
+                        }
+                    });
+                }
+            });
+
+            // Nếu là đề chuẩn 31 câu (maxPoints = 10.0) thì giữ nguyên điểm, nếu là gói lẻ thì quy đổi thang 10
+            const score10 = maxPoints > 0 ? ((earnedPoints / maxPoints) * 10).toFixed(2) : '0.00';
+
+            document.getElementById('res-correct-count').textContent = correctItems;
+            document.getElementById('res-wrong-count').textContent = wrongItems;
+            document.getElementById('res-unanswered-count').textContent = unansweredItems;
+            document.getElementById('res-total-score10').textContent = score10;
+            document.getElementById('score-detail-text').textContent =
+                `Điểm thực tế đạt được: ${earnedPoints.toFixed(2)} / ${maxPoints.toFixed(2)} điểm (Quy đổi thang 10: ${score10} điểm)`;
+
+            const banner = document.getElementById('score-banner');
+            banner.classList.remove('hidden');
+            renderQuizScreen();
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Làm lại gói hiện tại
+        function resetAllUserAnswers() {
+            userMcqAnswers = {};
+            userTfAnswers = {};
+            isExamSubmitted = false;
+            document.getElementById('score-banner').classList.add('hidden');
+            manageTimerForMode();
+            renderQuizScreen();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Đảo đề hoặc sinh đề ngẫu nhiên mới
+        function shuffleOrRegenerateExam() {
+            userMcqAnswers = {};
+            userTfAnswers = {};
+            isExamSubmitted = false;
+            document.getElementById('score-banner').classList.add('hidden');
+
+            if (currentPackageId === 'exam') {
+                activeQuestions = buildMatrixExamQuestions();
+            } else {
+                const p1 = shuffleArray(activeQuestions.filter(q => q.part === 1));
+                const p2 = shuffleArray(activeQuestions.filter(q => q.part === 2));
+                activeQuestions = [...p1, ...p2];
+            }
+
+            manageTimerForMode();
+            renderQuizScreen();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Tìm kiếm câu hỏi
+        function handleSearchInput() {
+            const val = document.getElementById('search-input').value;
+            searchQuery = val;
+            const mInput = document.getElementById('mobile-search-input');
+            if (mInput) mInput.value = val;
+            document.getElementById('clear-search-btn')?.classList.toggle('hidden', !val);
+            renderQuizScreen();
+        }
+
+        function handleMobileSearchInput() {
+            const val = document.getElementById('mobile-search-input').value;
+            searchQuery = val;
+            const dInput = document.getElementById('search-input');
+            if (dInput) dInput.value = val;
+            document.getElementById('clear-search-btn')?.classList.toggle('hidden', !val);
+            renderQuizScreen();
+        }
+
+        function clearSearch() {
+            searchQuery = '';
+            const sInput = document.getElementById('search-input');
+            const mInput = document.getElementById('mobile-search-input');
+            if (sInput) sInput.value = '';
+            if (mInput) mInput.value = '';
+            document.getElementById('clear-search-btn')?.classList.add('hidden');
+            renderQuizScreen();
+        }
+
+        // Phóng to cỡ chữ (100%, 115%, 130%)
+        function setZoom(percent) {
+            const wrapper = document.getElementById('zoom-wrapper');
+            if (wrapper) {
+                wrapper.style.zoom = `${percent}%`;
+            }
+            [100, 115, 130].forEach(p => {
+                const lb = document.getElementById(`lobby-zoom-${p}`);
+                const tb = document.getElementById(`top-zoom-${p}`);
+                if (lb) {
+                    lb.className = p === percent
+                        ? 'px-2.5 py-1 rounded-lg bg-sky-500 text-slate-950 font-black'
+                        : 'px-2.5 py-1 rounded-lg text-sky-200 hover:bg-sky-900 font-semibold';
+                }
+                if (tb) {
+                    tb.className = p === percent
+                        ? 'px-1.5 py-1 rounded bg-sky-500 text-slate-950 font-black'
+                        : 'px-1.5 py-1 rounded text-slate-300 hover:text-white font-bold';
+                }
+            });
+        }
+
+        function toggleNavigatorBody() {
+            const body = document.getElementById('navigator-body');
+            if (body) body.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
